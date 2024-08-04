@@ -1,0 +1,65 @@
+{
+    "version": "2.0.0",
+    "tasks": [
+        {
+            "label": "build All",
+            "type": "shell",
+            "command": "clang++",
+            "args": [
+                "-std=c++17",
+                "-g",
+                "${workspaceFolder}/*.cpp",
+                "-o",
+                "${workspaceFolder}/output",
+                "-I",
+                "/usr/include",
+                "-L",
+                "/lib/x86_64-linux-gnu",
+                "-lgtest",
+                "-lgtest_main",
+                "-lpthread",
+                "-lssl",
+                "-lcrypto"
+            ],
+            "group": {
+                "kind": "build",
+                "isDefault": true
+            }
+        },
+        {
+            "label": "cppcheck",
+            "type": "shell",
+            "command": "cppcheck",
+            "args": [
+                "--enable=all",
+                "--inconclusive",
+                "--std=c++17",
+                "--verbose",
+                "--language=c++",
+                "--check-config",
+                "--suppress=missingIncludeSystem",
+                "--include=/usr/bin/../lib/gcc/x86_64-linux-gnu/12/../../../../include/c++/12",
+                "--include=/usr/bin/../lib/gcc/x86_64-linux-gnu/12/../../../../include/x86_64-linux-gnu/c++/12",
+                "--include=/usr/bin/../lib/gcc/x86_64-linux-gnu/12/../../../../include/c++/12/backward",
+                "--include=/usr/lib/llvm-18/lib/clang/18/include",
+                "--include=/usr/local/include",
+                "--include=/usr/include/x86_64-linux-gnu",
+                "--include=/usr/include",
+                "${workspaceFolder}/*.cpp"
+            ],
+            "group": "build",
+            "problemMatcher": {
+                "owner": "cppcheck",
+                "fileLocation": ["relative", "${workspaceFolder}"],
+                "pattern": {
+                    "regexp": "^(.*):(\\d+):(\\d+):\\s+(warning|error):\\s+(.*)$",
+                    "file": 1,
+                    "line": 2,
+                    "column": 3,
+                    "severity": 4,
+                    "message": 5
+                }
+            }
+        }
+    ]
+}
