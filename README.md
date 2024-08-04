@@ -1,0 +1,7 @@
+Process Summary: 
+
+The first step in the debugging procedure was to fix an issue with the undefined identifier size_t. This problem arose from the source code lacking the required <cstddef> header, which specifies size_t in C++. In order to fix this and guarantee that size_t was specified correctly, the relevant include directive was added.
+
+The program then indicated missing system headers, including <cassert>, <cstddef>, and <fstream>, among others, during the static analysis using cppcheck. The primary reason for this was that the system include folders containing these common C++ library headers were not found by cppcheck. In order to fix this, the include paths were needed, therefore the command clang++ -v -x c++ -E /dev/null was used to confirm the standard library locations. The cppcheck task configuration then has these locations explicitly inserted.
+
+Because of its limitations in resolving system includes, cppcheck continues to indicate missing standard headers in spite of these modifications. In order to handle this, warnings about missing system headers were suppressed by adding the --suppress=missingIncludeSystem parameter to the cppcheck command. This made it possible to concentrate more clearly on any problems with the user code.
